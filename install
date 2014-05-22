@@ -1,0 +1,92 @@
+#!/bin/bash
+
+###########
+# This script puts symbolic links to the dotfiles into
+# your home directory and sources some configuration files
+# for git, etc...
+###
+
+echo "Installing Dotfiles..."
+
+DOTFILE_DIRECTORY=$(pwd)
+VIM_BUNDLE_DIRECTORY='~/.vim/bundle'
+echo $DOTFILE_DIRECTORY
+echo "Detecting platform..."
+# Detect OS
+platform='unknown'
+unamestr=$(uname)
+
+if [[ "$unamestr" == 'Linux' ]]; then
+  platform='linux'
+elif [[ "$unamestr" == 'FreeBSD' ]]; then
+  platform='freebsd'
+elif [[ "$unamestr" == 'Darwin' ]]; then
+  platform='OSX'
+fi
+
+echo "Running configurations for $platform"
+
+# Are we root?
+if [ "$(id -u)" != "0" ]; then
+  echo "Please run this script as root." 1>&2
+  exit 1
+fi
+
+echo "Removing old links..."
+#blow away old links
+rm ~/.vimrc
+rm ~/.bash_profile
+
+echo "Symlinking dotfiles to this directory..."
+# Install dotfiles
+ln -s $DOTFILE_DIRECTORY/vimrc ~/.vimrc
+ln -s $DOTFILE_DIRECTORY/bash_profile ~/.bash_profile
+
+echo "Getting Pretty Colors..."
+if [[ ! -f ~/.vim/colors/solarized.vim ]]; then
+  curl -o ~/.vim/colors/solarized.vim https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
+fi
+
+echo "Running a BundleInstall for vim..."
+# Run bundle install for vim
+vim +BundleInstall +qall
+
+# Install youcompleteme
+echo "Ensuring homebrew and cmake are installed..."
+if [[ $platform == 'OSX' ]]; then
+  type brew >/dev/null 2>&1 || { echo >&2 "Homebrew not installed. Installing it now: "; ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"; }
+  type cmake >/dev/null 2>&1 || { echo >&2 "cmake not installed. Installing it now: "; brew install cmake; }
+elif [[ $platform == 'Linux' ]]; then
+  sudo apt-get install build-essential cmake
+  sudo apt-get install python-dev
+fi
+
+read -r -p "Do you want to (re)compile YouCompleteMe for vim? (Takes a while, you only have to do it once) [y/N] " response
+case $response in
+  [yY][eE][sS]|[yY])
+    pushd ~/.vim/bundle/YouCompleteMe/
+    rm -rf third-party/*
+    git reset --hard HEAD
+    git submodule update --init --recursive
+    ./install.sh --clang-completer --omnisharp-completer
+    popd
+    ;;
+  *)
+    echo "Skipping."
+    ;;
+esac
+
+echo "Setting git configs..."
+# Do the git dance...
+git config --global user.name "Jake Cataford"
+git config --global user.email contact@jakecataford.com
+git config --global core.editor vim
+git config --global core.excludesfile $DOTFILE_DIRECTORY/global_git_ignore
+git config --global help.autocorrect 1
+git config --global color.ui true
+git config --global core.whitespace trailing-space
+
+echo "Sourcing bash_profile"
+# And source the profile:
+source ./bash_profile
+echo "🐙 🐙 🐙  Enjoy 🐙 🐙 🐙 "
