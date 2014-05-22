@@ -26,12 +26,6 @@ fi
 
 echo "Running configurations for $platform"
 
-# Are we root?
-if [ "$(id -u)" != "0" ]; then
-  echo "Please run this script as root." 1>&2
-  exit 1
-fi
-
 #Update the shit out of vim
 echo "Checking Vim Version..."
 if [[ $platform == 'linux' ]]; then
@@ -72,11 +66,13 @@ echo "Removing old links..."
 #blow away old links
 rm ~/.vimrc
 rm ~/.bash_profile
+rm ~/.bashrc
 
 echo "Symlinking dotfiles to this directory..."
 # Install dotfiles
 ln -s $DOTFILE_DIRECTORY/vimrc ~/.vimrc
 ln -s $DOTFILE_DIRECTORY/bash_profile ~/.bash_profile
+ln -s $DOTFILE_DIRECTORY/bashrc ~/.bashrc
 
 mkdir -p ~/.vim/colors/
 echo "Getting Pretty Colors..."
@@ -101,6 +97,9 @@ elif [[ $platform == 'linux' ]]; then
   sudo apt-get install build-essential cmake
   sudo apt-get install python-dev
 fi
+
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 
 read -r -p "Do you want to (re)compile YouCompleteMe for vim? (Takes a while, you only have to do it once) [y/N] " response
 case $response in
@@ -131,7 +130,11 @@ git config --global help.autocorrect 1
 git config --global color.ui true
 git config --global core.whitespace trailing-space
 
+echo "chowning /usr/local/"
+sudo chown -R $(whoami) /usr/local/
+
 echo "Sourcing bash_profile"
 # And source the profile:
 source ./bash_profile
+source ./bashrc
 echo "🐙 🐙 🐙  Enjoy 🐙 🐙 🐙 "
