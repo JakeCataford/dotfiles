@@ -1,5 +1,5 @@
 
-![https://www.dropbox.com/s/a5ibh0kf6en38zx/Screenshot%202014-05-22%2014.55.51.png]()
+![](https://www.dropbox.com/s/a5ibh0kf6en38zx/Screenshot%202014-05-22%2014.55.51.png)
 
 Jake's Dotfiles
 ========
