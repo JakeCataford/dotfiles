@@ -2,7 +2,7 @@ set encoding=utf-8
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 " let Vundle manage Vundle
@@ -29,7 +29,6 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'solars/github-vim'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'nosami/Omnisharp'
 Bundle 'tpope/vim-dispatch'
 " Syntaxes
 Bundle 'leshill/vim-json'
@@ -57,6 +56,35 @@ Bundle 'mgutz/vim-colors'
 Bundle 'ehamberg/vim-cute-python'
 Bundle 'bling/vim-airline'
 Bundle 'derekwyatt/vim-scala'
+
+" OSX only plugins
+if has('unix')
+  let s:uname = system("uname -s")
+  if s:uname == "Darwin"
+    Bundle 'nosami/Omnisharp'
+    let g:OmniSharp_host = "http://localhost:2000"
+    let g:OmniSharp_typeLookupInPreview = 1
+    let g:OmniSharp_timeout = 1
+    set noshowmatch
+    set splitbelow
+    autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuildAsync<cr>
+    autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
+    nnoremap <leader>fi :OmniSharpFindImplementations<cr>
+    nnoremap <leader>ft :OmniSharpFindType<cr>
+    nnoremap <leader>fs :OmniSharpFindSymbol<cr>
+    nnoremap <leader>fu :OmniSharpFindUsages<cr>
+    nnoremap <leader>fm :OmniSharpFindMembersInBuffer<cr>
+    nnoremap <leader>x  :OmniSharpFixIssue<cr>
+    nnoremap <leader>tt :OmniSharpTypeLookup<cr>
+    nnoremap <leader>dc :OmniSharpDocumentation<cr>
+    set cmdheight=2
+    set updatetime=500
+    nnoremap <leader>rl :OmniSharpReloadSolution<cr>
+    nnoremap <leader>cf :OmniSharpCodeFormat<cr>
+    let g:syntastic_cs_checkers = ['syntax', 'issues']
+    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+  endif
+endif
 
 " Required after vundle plugin definitions
 filetype plugin indent on
@@ -98,7 +126,7 @@ set nowrap        " don't wrap lines
 set showmatch     " set show matching parenthesis
 set ignorecase    " ignore case when searching
 set smartcase     " ignore case if search pattern is all lowercase,
-                  "  case-sensitive otherwise
+"  case-sensitive otherwise
 set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
 set history=1000         " remember more commands and search history
@@ -129,7 +157,7 @@ set softtabstop=2
 set expandtab
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set smarttab      " insert tabs on the start of a line according to
-                  "    shiftwidth, not tabstop
+"    shiftwidth, not tabstop
 set autoindent    " always set autoindenting on
 set copyindent    " copy the previous indentation on autoindenting
 
@@ -169,8 +197,8 @@ autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 " Markdown configurations
 augroup markdown
-    au!
-    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+  au!
+  au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 augroup END
 
 " Ruby Configurations
@@ -214,29 +242,6 @@ au FileType tex setlocal spell spelllang=en_us
 
 " Plugin Configurations
 """""""""""""""""""""""
-
-" Omnisharp
-let g:OmniSharp_host = "http://localhost:2000"
-let g:OmniSharp_typeLookupInPreview = 1
-let g:OmniSharp_timeout = 1
-set noshowmatch
-set splitbelow
-autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuildAsync<cr>
-autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
-nnoremap <leader>fi :OmniSharpFindImplementations<cr>
-nnoremap <leader>ft :OmniSharpFindType<cr>
-nnoremap <leader>fs :OmniSharpFindSymbol<cr>
-nnoremap <leader>fu :OmniSharpFindUsages<cr>
-nnoremap <leader>fm :OmniSharpFindMembersInBuffer<cr>
-nnoremap <leader>x  :OmniSharpFixIssue<cr>
-nnoremap <leader>tt :OmniSharpTypeLookup<cr>
-nnoremap <leader>dc :OmniSharpDocumentation<cr>
-set cmdheight=2
-set updatetime=500
-nnoremap <leader>rl :OmniSharpReloadSolution<cr>
-nnoremap <leader>cf :OmniSharpCodeFormat<cr>
-let g:syntastic_cs_checkers = ['syntax', 'issues']
-autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
 " Pyflakes
 "autocmd BufWritePost *.py call Flake8()
@@ -284,7 +289,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+  let g:airline_symbols = {}
 endif
 
 let g:airline_symbols.space = "\ua0"
