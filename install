@@ -79,7 +79,7 @@ esac
 echo "Setting git configs..."
 # Do the git dance...
 git config --global user.name "Jake Cataford"
-git config --global user.email contact@jakecataford.com
+git config --global user.email jakecataford@gmail.com
 git config --global core.editor vim
 git config --global core.excludesfile $DOTFILE_DIRECTORY/global_git_ignore
 git config --global help.autocorrect 1
