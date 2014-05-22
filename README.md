@@ -1,5 +1,5 @@
 
-![](https://www.dropbox.com/s/40pt7u623ie332e/dotfiles.png)
+![](https://dl.dropboxusercontent.com/s/40pt7u623ie332e/dotfiles.png?token_hash=AAHF2QEQUD-gtC1YkZ0xkJKIt1I1f7VSxV86UadUtk4v4g&expiry=1400789168)
 
 Jake's Dotfiles
 ========
