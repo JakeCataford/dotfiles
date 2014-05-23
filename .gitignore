@@ -1,2 +1,2 @@
-bash_profile_scripts/downloaded/**/*
-bash_profile_scripts/secrets/**/*
+bash/downloaded/**/*
+bash/secrets/**/*
