@@ -26,40 +26,80 @@ fi
 
 echo "Running configurations for $platform"
 
-# Are we root?
-if [ "$(id -u)" != "0" ]; then
-  echo "Please run this script as root." 1>&2
-  exit 1
+#Update the shit out of vim
+echo "Checking Vim Version..."
+if [[ $platform == 'linux' ]]; then
+  read -r -p "Do you want to compile the lastest vim from scratch? [y/N] " response
+  case $response in
+    [yY][eE][sS]|[yY])
+      sudo apt-get install libncurses5-dev libgnome2-dev libgnomeui-dev \
+        libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+        libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev ruby-dev mercurial
+      sudo apt-get remove vim vim-runtime gvim
+      sudo apt-get remove vim-tiny vim-common vim-gui-common
+      pushd ~
+      hg clone https://code.google.com/p/vim/
+      cd vim
+      ./configure --with-features=huge \
+        --enable-rubyinterp \
+        --enable-pythoninterp \
+        --with-python-config-dir=/usr/lib/python2.7/config \
+        --enable-perlinterp \
+        --enable-luainterp \
+        --enable-gui=gtk2 --enable-cscope --prefix=/usr
+      make VIMRUNTIMEDIR=/usr/share/vim/vim74
+      sudo make install
+      sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
+      sudo update-alternatives --set editor /usr/bin/vim
+      sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
+      sudo update-alternatives --set vi /usr/bin/vim
+      popd
+      ;;
+    *)
+      echo "Skipping."
+      ;;
+  esac
 fi
+
 
 echo "Removing old links..."
 #blow away old links
 rm ~/.vimrc
 rm ~/.bash_profile
+rm ~/.bashrc
 
 echo "Symlinking dotfiles to this directory..."
 # Install dotfiles
 ln -s $DOTFILE_DIRECTORY/vimrc ~/.vimrc
 ln -s $DOTFILE_DIRECTORY/bash_profile ~/.bash_profile
+ln -s $DOTFILE_DIRECTORY/bashrc ~/.bashrc
 
+mkdir -p ~/.vim/colors/
 echo "Getting Pretty Colors..."
 if [[ ! -f ~/.vim/colors/solarized.vim ]]; then
   curl -o ~/.vim/colors/solarized.vim https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
 fi
 
+echo "Installing Vundle..."
+mkdir -p ~/.vim/bundle/
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
 echo "Running a BundleInstall for vim..."
 # Run bundle install for vim
-vim +BundleInstall +qall
+vim +PluginInstall +qall
 
 # Install youcompleteme
 echo "Ensuring homebrew and cmake are installed..."
 if [[ $platform == 'OSX' ]]; then
   type brew >/dev/null 2>&1 || { echo >&2 "Homebrew not installed. Installing it now: "; ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"; }
   type cmake >/dev/null 2>&1 || { echo >&2 "cmake not installed. Installing it now: "; brew install cmake; }
-elif [[ $platform == 'Linux' ]]; then
+elif [[ $platform == 'linux' ]]; then
   sudo apt-get install build-essential cmake
   sudo apt-get install python-dev
 fi
+
+git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 
 read -r -p "Do you want to (re)compile YouCompleteMe for vim? (Takes a while, you only have to do it once) [y/N] " response
 case $response in
@@ -68,7 +108,11 @@ case $response in
     rm -rf third-party/*
     git reset --hard HEAD
     git submodule update --init --recursive
-    ./install.sh --clang-completer --omnisharp-completer
+    if [[ $platform == 'OSX' ]]; then
+      ./install.sh --clang-completer --omnisharp-completer
+    else
+      ./install.sh --clang-completer
+    fi
     popd
     ;;
   *)
@@ -86,7 +130,11 @@ git config --global help.autocorrect 1
 git config --global color.ui true
 git config --global core.whitespace trailing-space
 
+echo "chowning /usr/local/"
+sudo chown -R $(whoami) /usr/local/
+
 echo "Sourcing bash_profile"
 # And source the profile:
 source ./bash_profile
+source ./bashrc
 echo "🐙 🐙 🐙  Enjoy 🐙 🐙 🐙 "
