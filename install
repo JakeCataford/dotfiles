@@ -74,6 +74,7 @@ ln -s $DOTFILE_DIRECTORY/vimrc ~/.vimrc
 ln -s $DOTFILE_DIRECTORY/bash_profile ~/.bash_profile
 ln -s $DOTFILE_DIRECTORY/bashrc ~/.bashrc
 
+rm -rf ~/.vim/colors/
 mkdir -p ~/.vim/colors/
 echo "Getting Pretty Colors..."
 if [[ ! -f ~/.vim/colors/solarized.vim ]]; then
@@ -86,7 +87,7 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 echo "Running a BundleInstall for vim..."
 # Run bundle install for vim
-vim +PluginInstall +qall
+vim . +PluginInstall +qall!
 
 # Install youcompleteme
 echo "Ensuring homebrew and cmake are installed..."
@@ -135,6 +136,6 @@ sudo chown -R $(whoami) /usr/local/
 
 echo "Sourcing bash_profile"
 # And source the profile:
-source ./bash_profile
-source ./bashrc
+source ~/.bash_profile
+source ~/.bashrc
 echo "🐙 🐙 🐙  Enjoy 🐙 🐙 🐙 "

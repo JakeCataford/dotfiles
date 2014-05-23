@@ -1,8 +1,8 @@
 #!/bin/bash
 SCRIPTPATH="${BASH_ARGV[0]}"
 
-#Update if there's upstream changes
-git pull origin master >/dev/null
+#Update if there's upstream changes, dont pipe stderr to dev null
+$( cd $( dirname `readlink $SCRIPTPATH`) && git pull origin master >/dev/null )
 
 if [[ -L $SCRIPTPATH ]]; then
   cd $(dirname $(readlink $SCRIPTPATH))
@@ -20,3 +20,6 @@ do
     source $file
   fi
 done
+
+# go home.
+cd ~
