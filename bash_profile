@@ -1,6 +1,9 @@
 #!/bin/bash
 SCRIPTPATH="${BASH_ARGV[0]}"
 
+#Update if there's upstream changes
+git pull origin master >/dev/null
+
 if [[ -L $SCRIPTPATH ]]; then
   cd $(dirname $(readlink $SCRIPTPATH))
 fi
