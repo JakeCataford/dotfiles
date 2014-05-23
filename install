@@ -61,18 +61,8 @@ if [[ $platform == 'linux' ]]; then
   esac
 fi
 
-
-echo "Removing old links..."
-#blow away old links
-rm ~/.vimrc
-rm ~/.bash_profile
-rm ~/.bashrc
-
 echo "Symlinking dotfiles to this directory..."
-# Install dotfiles
-ln -s $DOTFILE_DIRECTORY/vimrc ~/.vimrc
-ln -s $DOTFILE_DIRECTORY/bash_profile ~/.bash_profile
-ln -s $DOTFILE_DIRECTORY/bashrc ~/.bashrc
+source ./linker.sh
 
 rm -rf ~/.vim/colors/
 mkdir -p ~/.vim/colors/
@@ -99,8 +89,10 @@ elif [[ $platform == 'linux' ]]; then
   sudo apt-get install python-dev
 fi
 
+echo "trying to install rbenv, then chowning ~/.rbenv/"
 git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+sudo chown -R $(whoami) ~/.rbenv/
 
 read -r -p "Do you want to (re)compile YouCompleteMe for vim? (Takes a while, you only have to do it once) [y/N] " response
 case $response in
@@ -126,7 +118,6 @@ echo "Setting git configs..."
 git config --global user.name "Jake Cataford"
 git config --global user.email jakecataford@gmail.com
 git config --global core.editor vim
-git config --global core.excludesfile $DOTFILE_DIRECTORY/global_git_ignore
 git config --global help.autocorrect 1
 git config --global color.ui true
 git config --global core.whitespace trailing-space
@@ -136,6 +127,5 @@ sudo chown -R $(whoami) /usr/local/
 
 echo "Sourcing bash_profile"
 # And source the profile:
-source ~/.bash_profile
 source ~/.bashrc
 echo "🐙 🐙 🐙  Enjoy 🐙 🐙 🐙 "
