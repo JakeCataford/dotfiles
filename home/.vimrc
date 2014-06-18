@@ -30,6 +30,8 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'solars/github-vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-dispatch'
+Bundle 'lokaltog/vim-easymotion'
+
 " Syntaxes
 Bundle 'leshill/vim-json'
 Bundle 'puppetlabs/puppet-syntax-vim'
@@ -135,8 +137,6 @@ set title                " change the terminal's title
 set guifont=Meslo\ For\ Powerline:h12
 
 let g:solarized_termtrans = 1
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
 
 " Remove the toolbar if we're running under a GUI (e.g. MacVIM).
 if has("gui_running")
@@ -148,7 +148,7 @@ set background=dark
 colorscheme solarized
 
 " Special characters for hilighting non-priting spaces/tabs/etc.
-set list listchars=tab:»\ ,trail:·
+set list listchars=tab:―\ ,trail:·
 
 " Default Tabs & spaces
 set tabstop=2     " a tab is four spaces
@@ -166,7 +166,7 @@ set foldmethod=indent
 set foldlevel=99
 
 " Highlight VCS conflict markers
-match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+"match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 " I CAN HAZ NORMAL REGEXES?
 nnoremap / /\v
@@ -239,6 +239,10 @@ cmap w!! w !sudo tee % >/dev/null
 au FileType tex setlocal wrap linebreak nolist textwidth=80  wrapmargin=0 formatoptions+=1
 au FileType tex setlocal spell spelllang=en_us
 
+" Gif config
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
 
 " Plugin Configurations
 """""""""""""""""""""""
@@ -307,7 +311,7 @@ nnoremap <S-k> <C-w>k
 nnoremap <S-l> <C-w>l
 
 " Sane Tabbing
-nnoremap <leader>tab :tabnext<CR>
+nnoremap <leader><tab> :tabnext<CR>
 nnoremap <leader><S-tab> :tabnew<CR>
 nnoremap <leader><C-tab> :tabclose<CR>
 

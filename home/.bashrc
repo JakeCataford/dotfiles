@@ -20,6 +20,13 @@ cd ~
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+export TMUX_POWERLINE_DEBUG_MODE_ENABLED_DEFAULT="false"
+export TMUX_POWERLINE_PATCHED_FONT_IN_USE_DEFAULT="true"
+export TMUX_POWERLINE_THEME_DEFAULT="default"
+export TMUX_POWERLINE_SEG_BATTERY_TYPE="percentage"
+export TMUX_POWERLINE_SEG_WEATHER_UNIT="c"
+export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD="120"
+export TMUX_POWERLINE_SEG_WEATHER_LOCATION="3369"
 
-# added by travis gem
+# added by travis eem
 [ -f /Users/JakeCataford/.travis/travis.sh ] && source /Users/JakeCataford/.travis/travis.sh

@@ -21,3 +21,6 @@ alias logcat="logcat-color"
 alias flush_redis='redis-cli -p 16379 flushall'
 alias flush_memcached='echo "flush_all" | nc 127.0.0.1 21211'
 alias toiletmode='echo "flushing all caches... FLUUUSSHHHH" && _flush_redis && _flush_memcached'
+
+#tmux
+alias tmux='tmux -2'
