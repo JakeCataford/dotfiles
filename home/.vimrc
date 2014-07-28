@@ -318,3 +318,10 @@ nnoremap <leader><C-tab> :tabclose<CR>
 " Gasp, Mouse!
 set mouse=a
 map <xCSI>[62~ <MouseDown>]
+
+" Golang
+filetype off
+filetype plugin indent off
+set runtimepath+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on
