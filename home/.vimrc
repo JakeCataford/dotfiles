@@ -41,6 +41,7 @@ Bundle 'itspriddle/vim-jquery'
 Bundle 'atourino/jinja.vim'
 Bundle 'saltstack/salt-vim'
 Bundle 'ntpeters/vim-better-whitespace'
+Bundle 'fatih/vim-go'
 
 " Python
 Bundle 'nvie/vim-flake8'
