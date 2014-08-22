@@ -1,8 +1,8 @@
 #Rails
-alias bx='bundle exec'
-alias bxr='bundle exec rake'
-alias bxrs='bundle exec rails s'
-alias bxrc='bundle exec rails c'
+alias bx='bumble exec'
+alias bxr='bumble exec rake'
+alias bxrs='bumble exec rails s'
+alias bxrc='bumble exec rails c'
 
 #Git
 alias gsu='git submodule update --init --recursive'
@@ -24,3 +24,10 @@ alias toiletmode='echo "flushing all caches... FLUUUSSHHHH" && _flush_redis && _
 
 #tmux
 alias tmux='tmux -2'
+
+#oops prevention :)
+git() { if [[ $@ == "push origin +master" || $@ == "push origin +develop" ]]; then open https://www.youtube.com/watch?v=Npfwj6sklvA; else command git "$@"; fi; }
+
+# alias
+
+alias ":wq"="exit"
