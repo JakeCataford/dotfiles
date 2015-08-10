@@ -1,8 +1,9 @@
 #Rails
-alias bx='bumble exec'
-alias bxr='bumble exec rake'
-alias bxrs='bumble exec rails s'
-alias bxrc='bumble exec rails c'
+alias bx='bundle exec'
+alias bi='bundle install --jobs=4'
+alias bxr='bundle exec rake'
+alias bxrs='bundle exec rails s'
+alias bxrc='bundle exec rails c'
 
 #Git
 alias gsu='git submodule update --init --recursive'
@@ -10,6 +11,9 @@ alias gp='git pull'
 alias grh='git reset --hard HEAD'
 alias git-reset-sub="git submodule foreach git reset --hard HEAD"
 alias gitflush="git branch --merged master | grep -v master | xargs git branch -d && git remote prune origin"
+
+#rubs
+alias rt='ruby -Itest'
 
 #ios
 alias _wacksims="killall -m -KILL \"iPhone Simulator\""

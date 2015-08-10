@@ -20,17 +20,18 @@ Bundle 'tpope/vim-surround'
 Bundle 'scrooloose/syntastic'
 Bundle 'Raimondi/delimitMate'
 Bundle 'luochen1990/rainbow'
-Bundle 'kien/ctrlp.vim'
 Bundle 'mhinz/vim-signify'
 Bundle 'scrooloose/nerdtree'
 Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'kchmck/vim-coffee-script'
-Bundle 'Valloric/YouCompleteMe'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'solars/github-vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-dispatch'
 Bundle 'lokaltog/vim-easymotion'
+Bundle 'roman/golden-ratio'
+Bundle 'wincent/command-t'
+Plugin 'szw/vim-tags'
 
 " Syntaxes
 Bundle 'leshill/vim-json'
@@ -326,3 +327,9 @@ filetype plugin indent off
 set runtimepath+=$GOROOT/misc/vim
 filetype plugin indent on
 syntax on
+
+" Command-T
+
+nnoremap <silent> <Leader>q :CommandT<CR>
+nnoremap <silent> <Leader>w :CommandTBuffer<CR>
+nnoremap <silent> <ENTER> :CommandTAcceptSelectionVSplitMap<CR>
