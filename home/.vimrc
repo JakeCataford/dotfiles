@@ -60,7 +60,6 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'skammer/vim-css-color'
 Bundle 'mgutz/vim-colors'
 Bundle 'ehamberg/vim-cute-python'
-Bundle 'bling/vim-airline'
 Bundle 'derekwyatt/vim-scala'
 
 " Required after vundle plugin definitions
@@ -261,16 +260,6 @@ set laststatus=2
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_jump = 0
 let g:syntastic_puppet_lint_disable = 0
-
-" Airline configs
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_symbols.space = "\ua0"
 
 " NerdTree
 map <leader>t :NERDTreeToggle<CR>
