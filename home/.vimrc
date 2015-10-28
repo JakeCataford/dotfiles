@@ -31,7 +31,9 @@ Bundle 'tpope/vim-dispatch'
 Bundle 'lokaltog/vim-easymotion'
 Bundle 'roman/golden-ratio'
 Bundle 'wincent/command-t'
-Plugin 'szw/vim-tags'
+Bundle 'szw/vim-tags'
+Bundle 'ervandew/supertab'
+Bundle 'git@bitbucket:ns9tks/vim-autocomplpop'
 
 " Syntaxes
 Bundle 'leshill/vim-json'
@@ -58,37 +60,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'skammer/vim-css-color'
 Bundle 'mgutz/vim-colors'
 Bundle 'ehamberg/vim-cute-python'
-Bundle 'bling/vim-airline'
 Bundle 'derekwyatt/vim-scala'
-
-" OSX only plugins
-if has('unix')
-  let s:uname = system("uname -s")
-  if s:uname == "Darwin"
-    Bundle 'nosami/Omnisharp'
-    let g:OmniSharp_host = "http://localhost:2000"
-    let g:OmniSharp_typeLookupInPreview = 1
-    let g:OmniSharp_timeout = 1
-    set noshowmatch
-    set splitbelow
-    autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuildAsync<cr>
-    autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
-    nnoremap <leader>fi :OmniSharpFindImplementations<cr>
-    nnoremap <leader>ft :OmniSharpFindType<cr>
-    nnoremap <leader>fs :OmniSharpFindSymbol<cr>
-    nnoremap <leader>fu :OmniSharpFindUsages<cr>
-    nnoremap <leader>fm :OmniSharpFindMembersInBuffer<cr>
-    nnoremap <leader>x  :OmniSharpFixIssue<cr>
-    nnoremap <leader>tt :OmniSharpTypeLookup<cr>
-    nnoremap <leader>dc :OmniSharpDocumentation<cr>
-    set cmdheight=2
-    set updatetime=500
-    nnoremap <leader>rl :OmniSharpReloadSolution<cr>
-    nnoremap <leader>cf :OmniSharpCodeFormat<cr>
-    let g:syntastic_cs_checkers = ['syntax', 'issues']
-    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
-  endif
-endif
 
 " Required after vundle plugin definitions
 filetype plugin indent on
@@ -280,7 +252,6 @@ let g:ctrlp_use_caching = 1 " enable caching
 let g:ctrlp_clear_cache_on_exit=0 " speed up by not removing clearing cache evertime
 let g:ctrlp_show_hidden = 0 " don't show me dotfiles
 let g:ctrlp_mruf_max = 250 " number of recently opened files
-nmap ; :CtrlPBuffer<CR>
 
 " Double rainbow - What does it mean!?
 let g:rainbow_active = 1
@@ -290,21 +261,17 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_auto_jump = 0
 let g:syntastic_puppet_lint_disable = 0
 
-" Airline configs
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-let g:airline_symbols.space = "\ua0"
-
 " NerdTree
 map <leader>t :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_open_on_console_startup = 0
+
+" Breaking Habits
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 
 " Window Navigation in a sane way
 nnoremap <S-h> <C-w>h
@@ -329,7 +296,45 @@ filetype plugin indent on
 syntax on
 
 " Command-T
-
 nnoremap <silent> <Leader>q :CommandT<CR>
 nnoremap <silent> <Leader>w :CommandTBuffer<CR>
-nnoremap <silent> <ENTER> :CommandTAcceptSelectionVSplitMap<CR>
+
+set visualbell
+
+" Paragraph navigation
+map J {)
+map K }(
+
+" Autocompletion options
+set completeopt=longest,menuone
+
+" Cursor in insert mode
+highlight Cursor guifg=red guibg=black
+highlight iCursor guifg=white guibg=steelblue
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
+
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" copy paste out of ssh
+function! PropagatePasteBufferToOSX()
+  let @n=getreg("*")
+  call system('pbcopy-remote', @n)
+  echo "done"
+endfunction
+
+function! PopulatePasteBufferFromOSX()
+  let @+ = system('pbpaste-remote')
+  echo "done"
+endfunction
+
+nnoremap <leader>6 :call PopulatePasteBufferFromOSX()<cr>
+nnoremap <leader>7 :call PropagatePasteBufferToOSX()<cr>

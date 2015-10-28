@@ -4,6 +4,7 @@ alias bi='bundle install --jobs=4'
 alias bxr='bundle exec rake'
 alias bxrs='bundle exec rails s'
 alias bxrc='bundle exec rails c'
+alias bxrt='bundle exec ruby -Itest'
 
 #Git
 alias gsu='git submodule update --init --recursive'
@@ -37,3 +38,10 @@ alias ":wq"="exit"
 
 #vagrant
 alias vagrant="cd ~/Vagrant/ && vagrant "
+
+#clear bash
+alias c="clear"
+
+bt() {
+  BROWSER_TESTING=1 bx rake test:browser TEST="$@"
+}

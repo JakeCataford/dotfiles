@@ -38,7 +38,7 @@ if [[ $platform == 'linux' ]]; then
       sudo apt-get remove vim vim-runtime gvim
       sudo apt-get remove vim-tiny vim-common vim-gui-common
       pushd ~
-      hg clone https://code.google.com/p/vim/
+      git clone git@github.com:vim/vim.git
       cd vim
       ./configure --with-features=huge \
         --enable-rubyinterp \
@@ -46,13 +46,10 @@ if [[ $platform == 'linux' ]]; then
         --with-python-config-dir=/usr/lib/python2.7/config \
         --enable-perlinterp \
         --enable-luainterp \
-        --enable-gui=gtk2 --enable-cscope --prefix=/usr
+        --enable-gui=gtk2 --enable-cscope --prefix=$HOME/bin/
       make VIMRUNTIMEDIR=/usr/share/vim/vim74
       sudo make install
-      sudo update-alternatives --install /usr/bin/editor editor /usr/bin/vim 1
-      sudo update-alternatives --set editor /usr/bin/vim
-      sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 1
-      sudo update-alternatives --set vi /usr/bin/vim
+      ln -s $HOME/bin/bin/vim $HOME/bin/vim
       popd
       ;;
     *)
@@ -90,28 +87,11 @@ elif [[ $platform == 'linux' ]]; then
 fi
 
 echo "trying to install rbenv, then chowning ~/.rbenv/"
-git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-sudo chown -R $(whoami) ~/.rbenv/
-
-read -r -p "Do you want to (re)compile YouCompleteMe for vim? (Takes a while, you only have to do it once) [y/N] " response
-case $response in
-  [yY][eE][sS]|[yY])
-    pushd ~/.vim/bundle/YouCompleteMe/
-    rm -rf third-party/*
-    git reset --hard HEAD
-    git submodule update --init --recursive
-    if [[ $platform == 'OSX' ]]; then
-      ./install.sh --clang-completer --omnisharp-completer
-    else
-      ./install.sh --clang-completer
-    fi
-    popd
-    ;;
-  *)
-    echo "Skipping."
-    ;;
-esac
+if [[ $platform == 'OSX' ]]; then
+  git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+  sudo chown -R $(whoami) ~/.rbenv/
+fi
 
 echo "Setting git configs..."
 # Do the git dance...
@@ -121,9 +101,6 @@ git config --global core.editor vim
 git config --global help.autocorrect 1
 git config --global color.ui true
 git config --global core.whitespace trailing-space
-
-echo "chowning /usr/local/"
-sudo chown -R $(whoami) /usr/local/
 
 echo "Sourcing bash_profile"
 # And source the profile:
