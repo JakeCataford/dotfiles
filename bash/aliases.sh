@@ -32,6 +32,8 @@ alias tmux='tmux -2'
 #oops prevention :)
 git() { if [[ $@ == "push origin +master" || $@ == "push origin +develop" ]]; then open https://www.youtube.com/watch?v=Npfwj6sklvA; else command git "$@"; fi; }
 
-# alias
-
+#exit
 alias ":wq"="exit"
+
+#vagrant
+alias vagrant="cd ~/Vagrant/ && vagrant "

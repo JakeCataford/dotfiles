@@ -1,2 +1,2 @@
 export GOPATH=~/go
-export ANDROID_HOME=/etc/android-sdk
+export ANDROID_HOME=~/Library/Android/sdk/
