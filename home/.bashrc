@@ -32,3 +32,5 @@ export TMUX_POWERLINE_SEG_WEATHER_LOCATION="3369"
 
 # added by travis eem
 [ -f /Users/JakeCataford/.travis/travis.sh ] && source /Users/JakeCataford/.travis/travis.sh
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

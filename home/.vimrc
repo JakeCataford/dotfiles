@@ -5,6 +5,9 @@ filetype off                   " required!
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
+" FZF
+set rtp+=~/.fzf
+
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
 
@@ -30,7 +33,6 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-dispatch'
 Bundle 'lokaltog/vim-easymotion'
 Bundle 'roman/golden-ratio'
-Bundle 'wincent/command-t'
 Bundle 'szw/vim-tags'
 Bundle 'ervandew/supertab'
 Bundle 'git@bitbucket:ns9tks/vim-autocomplpop'
@@ -295,9 +297,8 @@ set runtimepath+=$GOROOT/misc/vim
 filetype plugin indent on
 syntax on
 
-" Command-T
-nnoremap <silent> <Leader>q :CommandT<CR>
-nnoremap <silent> <Leader>w :CommandTBuffer<CR>
+" FZF
+nnoremap <silent> <Leader>q :FZF<CR>
 
 set visualbell
 
@@ -338,3 +339,4 @@ endfunction
 
 nnoremap <leader>6 :call PopulatePasteBufferFromOSX()<cr>
 nnoremap <leader>7 :call PropagatePasteBufferToOSX()<cr>
+

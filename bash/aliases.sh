@@ -45,3 +45,8 @@ alias c="clear"
 bt() {
   BROWSER_TESTING=1 bx rake test:browser TEST="$@"
 }
+
+squash() {
+  FEATURE=$(git rev-parse --abbrev-ref HEAD)
+  git rebase -i $(git merge-base $FEATURE master)
+}
