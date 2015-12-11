@@ -26,6 +26,15 @@ fi
 
 echo "Running configurations for $platform"
 
+echo "Setting git configs..."
+# Do the git dance...
+git config --global user.name "Jake Cataford"
+git config --global user.email jakecataford@gmail.com
+git config --global core.editor vim
+git config --global help.autocorrect 1
+git config --global color.ui true
+git config --global core.whitespace trailing-space
+
 #Update the shit out of vim
 echo "Checking Vim Version..."
 if [[ $platform == 'linux' ]]; then
@@ -58,14 +67,22 @@ if [[ $platform == 'linux' ]]; then
   esac
 fi
 
-echo "Symlinking dotfiles to this directory..."
-source ./linker.sh
-
 rm -rf ~/.vim/colors/
 mkdir -p ~/.vim/colors/
 echo "Getting Pretty Colors..."
 if [[ ! -f ~/.vim/colors/solarized.vim ]]; then
   curl -o ~/.vim/colors/solarized.vim https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim
+fi
+
+echo "Installing OhMyZSH"
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || exit 0
+
+echo "Installing and configuring go..."
+if [[ $platform == 'linux' ]]; then
+  sudo apt-get install go
+else [[ $platform == 'OSX' ]]
+  brew install hg bzr
+  brew install go --cross-compile-common
 fi
 
 echo "Installing Vundle..."
@@ -76,37 +93,15 @@ echo "Running a BundleInstall for vim..."
 # Run bundle install for vim
 vim . +PluginInstall +qall!
 
-# Install youcompleteme
-echo "Ensuring homebrew and cmake are installed..."
-if [[ $platform == 'OSX' ]]; then
-  type brew >/dev/null 2>&1 || { echo >&2 "Homebrew not installed. Installing it now: "; ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"; }
-  type cmake >/dev/null 2>&1 || { echo >&2 "cmake not installed. Installing it now: "; brew install cmake; }
-elif [[ $platform == 'linux' ]]; then
-  sudo apt-get install build-essential cmake
-  sudo apt-get install python-dev
-fi
-
-echo "trying to install rbenv, then chowning ~/.rbenv/"
-if [[ $platform == 'OSX' ]]; then
-  git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-  sudo chown -R $(whoami) ~/.rbenv/
-fi
-
-echo "Setting git configs..."
-# Do the git dance...
-git config --global user.name "Jake Cataford"
-git config --global user.email jakecataford@gmail.com
-git config --global core.editor vim
-git config --global help.autocorrect 1
-git config --global color.ui true
-git config --global core.whitespace trailing-space
-
 echo "installing FZF"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+echo "Setting ZSH as the default shell"
+chsh /usr/bin/zsh
+
+echo "Symlinking dotfiles to this directory..."
+source ./linker.sh
 echo "Sourcing bash_profile"
-# And source the profile:
 source ~/.bashrc
 echo "🐙 🐙 🐙  Enjoy 🐙 🐙 🐙 "

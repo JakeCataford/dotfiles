@@ -286,10 +286,6 @@ nnoremap <leader><tab> :tabnext<CR>
 nnoremap <leader><S-tab> :tabnew<CR>
 nnoremap <leader><C-tab> :tabclose<CR>
 
-" Gasp, Mouse!
-set mouse=a
-map <xCSI>[62~ <MouseDown>]
-
 " Golang
 filetype off
 filetype plugin indent off
@@ -301,10 +297,6 @@ syntax on
 nnoremap <silent> <Leader>q :FZF<CR>
 
 set visualbell
-
-" Paragraph navigation
-map J {)
-map K }(
 
 " Autocompletion options
 set completeopt=longest,menuone
@@ -340,3 +332,11 @@ endfunction
 nnoremap <leader>6 :call PopulatePasteBufferFromOSX()<cr>
 nnoremap <leader>7 :call PropagatePasteBufferToOSX()<cr>
 
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+xnoremap . :norm.<CR>
