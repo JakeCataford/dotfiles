@@ -7,4 +7,4 @@ export PATH=$PATH:/usr/local/sbin
 export PATH=~/bin:$PATH
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$ANDROID_HOME/platform-tools:$PATH
-eval "$(rbenv init -)"
+export PATH=$GOPATH/bin:$PATH

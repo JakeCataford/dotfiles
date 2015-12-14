@@ -1,6 +1,6 @@
 #Rails
 alias bx='bundle exec'
-alias bi='bundle install --jobs=4'
+alias bi='bundle check || bundle install --jobs=4'
 alias bxr='bundle exec rake'
 alias bxrs='bundle exec rails s'
 alias bxrc='bundle exec rails c'
@@ -16,16 +16,8 @@ alias gitflush="git branch --merged master | grep -v master | xargs git branch -
 #rubs
 alias rt='ruby -Itest'
 
-#ios
-alias _wacksims="killall -m -KILL \"iPhone Simulator\""
-
 #android
 alias logcat="logcat-color"
-
-#Cache Flush
-alias flush_redis='redis-cli -p 16379 flushall'
-alias flush_memcached='echo "flush_all" | nc 127.0.0.1 21211'
-alias toiletmode='echo "flushing all caches... FLUUUSSHHHH" && _flush_redis && _flush_memcached'
 
 #tmux
 alias tmux='tmux -2'
@@ -50,3 +42,7 @@ squash() {
   FEATURE=$(git rev-parse --abbrev-ref HEAD)
   git rebase -i $(git merge-base $FEATURE master)
 }
+
+alias "mergebase"="echo \$(git merge-base \$(git rev-parse HEAD) master)"
+
+alias "git_diff_merge"="git diff HEAD \$(mergebase)"
