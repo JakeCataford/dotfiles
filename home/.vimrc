@@ -35,7 +35,11 @@ Bundle 'lokaltog/vim-easymotion'
 Bundle 'roman/golden-ratio'
 Bundle 'szw/vim-tags'
 Bundle 'ervandew/supertab'
-Bundle 'git@bitbucket:ns9tks/vim-autocomplpop'
+Bundle 'Shougo/neocomplete.vim'
+Bundle 'kana/vim-textobj-user'
+Bundle 'macros/matchit.vim'
+Bundle 'tkhren/vim-textobj-numeral'
+Bundle 'nelstrom/vim-textobj-rubyblock'
 
 " Syntaxes
 Bundle 'leshill/vim-json'
@@ -299,7 +303,9 @@ nnoremap <silent> <Leader>q :FZF<CR>
 set visualbell
 
 " Autocompletion options
-set completeopt=longest,menuone
+set completeopt=menuone
+let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#enable_at_startup = 1
 
 " Cursor in insert mode
 highlight Cursor guifg=red guibg=black

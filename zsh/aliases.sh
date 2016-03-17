@@ -23,7 +23,17 @@ alias logcat="logcat-color"
 alias tmux='tmux -2'
 
 #oops prevention :)
-git() { if [[ $@ == "push origin +master" || $@ == "push origin +develop" ]]; then open https://www.youtube.com/watch?v=Npfwj6sklvA; else command git "$@"; fi; }
+git() {
+  if [[ $@ == "push origin +master" || $@ == "push origin +develop" ]]; then
+    open https://www.youtube.com/watch?v=Npfwj6sklvA
+  elif [[ $@ == "remove merged" ]]; then
+    git branch --merged master | grep -v "\*" | grep -v master | xargs -n 1 git branch -d
+  elif [[ $@ == "squish" ]]; then
+    !HEAD_COMMIT=$(git rev-list @ -n 1) BASE_COMMIT=$(git merge-base @ origin/master) && git reset --soft $BASE_COMMIT && git commit --reuse-message=$HEAD_COMMIT~$[$(git rev-list $BASE_COMMIT..$HEAD_COMMIT --count)-1] —edit
+  else
+    command git "$@"
+  fi
+}
 
 #exit
 alias ":wq"="exit"
@@ -34,13 +44,8 @@ alias vagrant="cd ~/Vagrant/ && vagrant "
 #clear bash
 alias c="clear"
 
-bt() {
-  BROWSER_TESTING=1 bx rake test:browser TEST="$@"
-}
-
-squash() {
-  FEATURE=$(git rev-parse --abbrev-ref HEAD)
-  git rebase -i $(git merge-base $FEATURE master)
+browser_test() {
+  SHOPIFY_SERVICES_PORT=3000 CAPYBARA_DRIVER=remote_chrome BROWSER_TESTING=1 bx rake test:browser TEST="$@"
 }
 
 alias "mergebase"="echo \$(git merge-base \$(git rev-parse HEAD) master)"
