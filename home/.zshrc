@@ -1,4 +1,8 @@
+SCRIPTPATH=$(realpath ~/.zshrc)
+export DOTFILE_PATH=$(dirname $SCRIPTPATH)
+
 export ZSH=$HOME/.oh-my-zsh
+export ZSH_CUSTOM=$DOTFILE_PATH/../zshcustom/
 ZSH_THEME="agnoster"
 HYPHEN_INSENSITIVE="true"
 export UPDATE_ZSH_DAYS=13
@@ -8,9 +12,6 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-SCRIPTPATH=$(realpath ~/.zshrc)
-
-export DOTFILE_PATH=$(dirname $SCRIPTPATH)
 # Update if there's upstream changes, dont pipe stderr to dev null
 cd $DOTFILE_PATH && git pull origin master >/dev/null 2>&1
 
