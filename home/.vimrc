@@ -346,3 +346,4 @@ function! ExecuteMacroOverVisualRange()
 endfunction
 
 xnoremap . :norm.<CR>
+runtime macros/matchit.vim
